@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'src/app/shared/Shared.module';
+import { RegisterComponent } from './register/register.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [RegisterComponent],
   imports: [
     SharedModule
   ]
