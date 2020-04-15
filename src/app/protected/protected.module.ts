@@ -2,23 +2,20 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from 'src/app/shared/Shared.module';
 
 import { ProtectedRoutingModule } from './protected-routing.module';
-import { DashboardModule } from './dashboard/dashboard.module';
-import { ParametersModule } from './parameters/parameters.module';
-import { PlanningModule } from './planning/planning.module';
-import { ProfilModule } from './profil/profil.module';
-import { WorkdayModule } from './workday/workday.module';
+import { ProtectedComponent } from './protected.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [ProtectedComponent],
   imports: [
     SharedModule,
     ProtectedRoutingModule,
-    DashboardModule,
-    ParametersModule,
-    PlanningModule,
-    ProfilModule,
-    WorkdayModule
+    // chergement asynchrone : lazy
+    // DashboardModule, 
+    // ParametersModule,
+    // PlanningModule,
+    // ProfilModule,
+    // WorkdayModule
   ]
 })
 export class ProtectedModule { }

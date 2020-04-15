@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'al-home-banner',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home-banner.component.scss']
 })
 export class HomeBannerComponent implements OnInit {
+  public dashboardPath = 'app/dashboard';
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
+  public navigate(page: string): void {
+    this.router.navigate([page]);
+   }
 }

@@ -1,0 +1,14 @@
+.list-group-item:hover {
+    cursor: pointer;
+    box-shadow: 0px 3px 3px 0px #cfcfcf;
+}
+
+.list-group-item.active {
+    z-index: 2;
+    color: #fff;
+   // background-color: #f39521;
+   // border-color: #ef9115;
+
+    background-color: #5a1531;
+    border-color: #3e0f22;
+}

@@ -17,8 +17,8 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     CoreModule,
+    AppRoutingModule,
     AlertModule.forRoot(),
     BsDatepickerModule.forRoot(),
     BrowserAnimationsModule,
