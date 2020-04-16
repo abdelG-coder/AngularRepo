@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'al-workday-form',
@@ -25,9 +25,16 @@ export class WorkdayFormComponent implements OnInit {
 
   createWorkdayForm(): FormGroup {
     return this.fb.group({
-      'dueDate': '',
-      'tasks': this.fb.array([]),
-      'notes': '',
+      dueDate: ['', [
+        Validators.required
+      ]],
+      tasks: this.fb.array([], [
+        Validators.required,
+        Validators.maxLength(6)
+      ]),
+      notes: ['', [
+        Validators.maxLength(1000)
+      ]]
     });
   }
    
