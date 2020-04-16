@@ -15,8 +15,8 @@ export class WorkdayFormComponent implements OnInit {
     this.workdayForm = this.createWorkdayForm();
 
     // Ajoutez une nouvelle tâche “en dur” :
-    const taskGroup = this.fb.group({'title': 'Ecrire un article sur awesome-angular.com !'});
-    this.tasks.push(taskGroup);
+    //const taskGroup = this.fb.group({'title': 'Ecrire un article sur awesome-angular.com !'});
+    //this.tasks.push(taskGroup);
   }
 
   get dueDate() { return this.workdayForm.get('dueDate'); }

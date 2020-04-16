@@ -1,6 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup} from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormGroup} from '@angular/forms';
 
 
 @Component({
@@ -11,11 +10,19 @@ import { FormBuilder, FormGroup} from '@angular/forms';
 export class WorkdayFormTasksItemComponent implements OnInit {
 
   @Input() task: FormGroup;
+  @Input() index: number;
+  @Input() isFirst: boolean;
+  @Input() isLast: boolean;
+  
+  @Output() removedTask = new EventEmitter<number>();
 
-  constructor(private fb: FormBuilder, private router: Router) { }
-
+  constructor() { }
 
   ngOnInit() {
   }
+
+  removeTask(index: number) {
+    this.removedTask.emit(index);
+   }
 
 }
