@@ -1,0 +1,7 @@
+<div class="alert" >
+    <alert  *ngFor="let toastr of toastrs$ | async" 
+            type="{{ toastr.category }}" (click)="closeToastr(toastr)"
+            > 
+        {{ toastr.message }}
+    </alert>
+</div>
