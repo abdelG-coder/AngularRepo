@@ -1,5 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { PublicModule } from '../public/public.module';
 import { ProtectedModule } from '../protected/protected.module';
 
@@ -16,6 +17,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
   declarations: [NavbarComponent, FooterComponent, PageNotFoundComponent, LoaderComponent, ToastrComponent],
   imports: [
     CommonModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     PublicModule,
     ProtectedModule,

@@ -23,7 +23,7 @@ export class ToastrService {
 
     this.listeMessage.push(toastr)
     
-    timer(0, 3000).pipe(take(2)).subscribe(i => {
+    timer(0, 4000).pipe(take(2)).subscribe(i => {
       if (i === 0) {
           this.toastrs.next(this.listeMessage);
       } else {

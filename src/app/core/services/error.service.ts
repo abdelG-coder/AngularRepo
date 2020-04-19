@@ -11,8 +11,8 @@ export class ErrorService {
  
  public handleError(error) {
   this.toastrService.showToastr({
-    category: 'danger',
-    message: error.error.error.message
+      category: 'danger',
+      message: error.error.error.message
   });
   return throwError(error);
  }
