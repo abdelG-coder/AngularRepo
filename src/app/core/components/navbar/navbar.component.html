@@ -11,11 +11,17 @@
    <!-- Cas où l’utilisateur est connecté -->
    <div *ngIf="user" class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
-     <li class="nav-item">
-      <a class="nav-link">{{user?.email}}</a>
-     </li>
+      <li [class.active]="isActive(homePath)" class="nav-item">
+        <a (click)="navigate(homePath)" class="nav-link">Accueil</a>
+      </li>
+     
+     
+    
     </ul>
     <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link">{{user?.email}}</a>
+       </li>
      <li class="nav-item">
       <a class="nav-link" (click)="logout()">Déconnexion</a>
      </li>
