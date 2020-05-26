@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { WorkdaysService } from 'src/app/core/services/workdays.service';
 import { Workday } from 'src/app/shared/models/workday';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute  } from '@angular/router';
 
 @Component({
   selector: 'al-workday-form',
@@ -11,17 +11,26 @@ import { Router } from '@angular/router';
   styles: []
 })
 export class WorkdayFormComponent implements OnInit {
+  workdayId: string;
   workdayForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private workdaysService: WorkdaysService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.workdayForm = this.createWorkdayForm();
-
+    this.route.queryParams.subscribe(params => {
+      this.workdayId = '';
+      this.workdayForm = this.createWorkdayForm();
+      if(params.date) {
+       const date: Date = new Date(+params.date);
+       this.dueDate.setValue(date);
+      }
+     });
+    
     // Ajoutez une nouvelle tâche “en dur” :
     //const taskGroup = this.fb.group({'title': 'Ecrire un article sur awesome-angular.com !'});
     //this.tasks.push(taskGroup);
@@ -48,12 +57,52 @@ export class WorkdayFormComponent implements OnInit {
    
   submit(): void {
     const userId: string = this.authService.currentUser.id;
-    const workday: Workday = new Workday({...{ userId: userId }, ...this.workdayForm.value});
+    
+
+    if(this.workdayId) {
+      let workday: Workday = new Workday({...{id: this.workdayId }, ...this.workdayForm.value});
+      workday.userId = userId;
+    
+      this.workdaysService.update(workday).subscribe(
+       _ => this.router.navigate(['/app/planning']),
+       _ => this.workdayForm.reset()
+      );
+      return;
+     }
+    
+     let workday: Workday = new Workday({...this.workdayForm.value});
+     workday.userId = userId;
  
     this.workdaysService.save(workday).subscribe(
     _ => this.router.navigate(['/app/planning']),
     _ => this.workdayForm.reset()
     );
   }
+
+  onDateSelected(displayDate: string) {
+    this.workdaysService.getWorkdayByDate(displayDate).subscribe(workday => {
+      this.resetWorkdayForm(); // on réinitialise le formulaire d'une journée de travail.   
+      if(!workday) return; // Si cette journée de travail n'existe pas sur le Firestore, alors on s'arrête là.
+
+      this.workdayId = workday.id;
+      this.notes.setValue(workday.notes);
+      workday.tasks.forEach(task => {
+        const taskField: FormGroup = this.fb.group({
+          title: task.title,
+          todo: task.todo,
+          done: task.done
+        });
+        this.tasks.push(taskField);
+      });
+    });
+   }
+   
+
+  resetWorkdayForm() {
+    while(this.tasks.length !== 0) {
+     this.tasks.removeAt(0);
+    }
+    this.notes.reset();
+   }
 
 }

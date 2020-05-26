@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { of, Observable } from 'rxjs';
+import { delay, filter} from 'rxjs/operators';
+import { Workday } from 'src/app/shared/models/workday';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { WorkdaysService } from 'src/app/core/services/workdays.service';
 
 @Component({
   selector: 'al-planning-workday-list',
@@ -9,30 +12,23 @@ import { delay } from 'rxjs/operators';
 })
 export class PlanningWorkdayListComponent implements OnInit {
 
-  public workdays$;
-  public workdays;
+  workdays$: Observable<Workday>;
 
-  constructor() { }
-
-  ngOnInit() {
-    this.workdays = [
-      { dueDate: 'Lundi', doneTasks: 1, remainingTasks: 3 },
-      { dueDate: 'Mardi', doneTasks: 0, remainingTasks: 2 },
-      { dueDate: 'Mercredi', doneTasks: 0, remainingTasks: 1 },
-      { dueDate: 'Jeudi', doneTasks: 1, remainingTasks: 0 },
-      { dueDate: 'Vendredi', doneTasks: 0, remainingTasks: 2 },
-      { dueDate: 'Sammedi', doneTasks: 0, remainingTasks: 1 },
-      { dueDate: 'Dimenche', doneTasks: 0, remainingTasks: 0 }
-     ];
-
-     this.workdays$ = of(this.workdays).pipe(delay(1000)); 
-  }
-
-  // Ajoutez notre gestionnaire d’événement :
-  onWorkdayRemoved(dueDate: string) {
-    this.workdays = this.workdays.filter(workday => 
-      !dueDate.includes(workday.dueDate)
-    );
-    this.workdays$ = of(this.workdays);
-  }
+  constructor(
+    private authService: AuthService,
+    private workdaySerice: WorkdaysService) { }
+   
+   ngOnInit() {
+    const id: string = this.authService.currentUser.id;
+    this.workdays$ = this.workdaySerice.getWorkdayByUser(id);
+   }
+   
+   onWorkdayRemoved(workday: Workday) {
+    this.workdaySerice.remove(workday)
+    .subscribe(_ => {
+      this.workdays$ = this.workdays$.pipe(
+        filter(currentWorkday => currentWorkday.id != workday.id)
+       );
+    })
+   }
 }
